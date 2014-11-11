@@ -1,0 +1,14 @@
+html, body {
+  background-color: $background-color;
+  font-size: $base-font-size;
+  line-height: 1.6;
+  font-family: $base-font-family;
+  color: $text-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $heading-font-family;
+  font-weight: $heading-font-weight;
+  text-rendering: optimizeLegibility; /* to enable ligatures and kerning */
+  @extend .paragraph-margins;
+}

@@ -1,135 +1,102 @@
-<div id="collection">
+{% comment %}
+  Important notes about pagination:
+  - Never access collection.products before the opening paginate tag.
+  - Never paginate by more than 50.
+{% endcomment %}
 
-  {% paginate collection.products by settings.pagination_limit %}
-  <!-- Begin collection info -->
-  <div class="row">
-    <div class="span12">
+{% assign products_per_page = settings.products_per_row | times: settings.number_of_rows %}
+{% assign numbers = 'zero, one, two, three, four, five, six' | split: ',' %}
+{% assign products_per_row = settings.products_per_row | times: 1 %}
+{% assign products_per_row = numbers[products_per_row] | strip | append: '-per-row' %}
 
-      <!-- Begin breadcrumb -->
-      <div class="breadcrumb clearfix">
-        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ shop.url }}" title="{{ shop.name | escape }}" itemprop="url"><span itemprop="title">Home</span></a></span>
-        <span class="arrow-space">&#62;</span>
-        <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ collection.url }}" title="{{ collection.title | escape }}" itemprop="url"><span itemprop="title">{{ collection.title }}</span></a></span>
+{% paginate collection.products by products_per_page %}
 
-        {% if current_tags %}
-          {% for tag in current_tags %}
-            <span class="arrow-space">&#62;</span>
-            <span itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/collections/{% if collection.handle != blank %}{{ collection.handle }}{% else %}all{% endif %}/{{ tag | handleize }}" title="{{ tag | escape }}" itemprop="url"><span itemprop="title">{{ tag }}</span></a></span>
-          {% endfor %}
-        {% endif %}
+{% comment %}
+  Re-use the .rte class wherever you output content that was added by a merchant using
+  the Rich Text Editor ( 'rte' stands for rich text editor ).
+  Style all HTML elements in that content the same way across the board.
+  Use the .rte class in your CSS to help maintain consistency.
+  Example: the h2 element should have the same size and color in:
+  - product descriptions
+  - collection descriptions
+  - page content
+  - blog post
+{% endcomment %}
 
-        {% if paginate.pages != 0 %}
-          <span class="arrow-space">&#62;</span> <strong>Page {{ paginate.current_page }} of {{ paginate.pages }}</strong>
-        {% endif %}
-      </div>
-      <!-- End breadcrumb -->
+<h1 class="left">{{ collection.title }}</h1>
 
-      <!-- Begin sort collection -->
-      <div class="clearfix">
-        <h1 class="collection-title">{{ collection.title }}</h1>
-        {% if settings.collection_tags %}        
-          {% if collection.all_tags.size > 0 %}
-          <div class="browse-tags">
-          	<label>Browse:</label>
-          	<select id="collection_tags" class="coll-filter">
-          		<option value="">All items</option>
-          		{% for tag in collection.all_tags %}
-          			<option value="{{ tag | handle }}"{% if current_tags contains tag %} selected="selected"{% endif %}>{{ tag }}</option>
-          		{% endfor %}
-          	</select>        
-          </div>
-          {% endif %}        
-        {% endif %}
-        {% if settings.collection_sort and collection.products_count > 1 %}
-          <div class="browse-tags">
-            <label>Sort by:</label>
-          	<select class="sort-by">
-          	  <option value="manual">Featured</option>
-              <option value="price-ascending">Price: Low to High</option>
-              <option value="price-descending">Price: High to Low</option>
-              <option value="title-ascending">A-Z</option>
-              <option value="title-descending">Z-A</option>
-              <option value="created-ascending">Oldest to Newest</option>
-              <option value="created-descending">Newest to Oldest</option>
-              <option value="best-selling">Best Selling</option>
-          	</select>           
-          </div>        
-        {% endif %}
-      </div>
-      <!-- End sort collection -->
+{% comment %}
+  Collection sorting. Needs the JavaScript that is at the bottom of this file.
+{% endcomment %}
+{% if collection.products_count > 1 %}
+<select class="sort-by right">
+  <option value="manual">Featured</option>
+  <option value="price-ascending">Price: Low to High</option>
+  <option value="price-descending">Price: Hight to Low</option>
+  <option value="title-ascending">A-Z</option>
+  <option value="title-descending">Z-A</option>
+  <option value="created-ascending">Oldest to Newest</option>
+  <option value="created-descending">Newest to Oldest</option>
+  <option value="best-selling">Best Selling</option>
+ </select>
+{% endif %}
 
-      <!-- Begin collection description -->
-      {% if collection.description != "" %}
-        {{ collection.description }}
-      {% endif %}
-      <!-- End collection description -->
+{% comment %}
+  Listing all tags within the current collection.
+  Shopify uses product tags to manage subcategories inside collections.
+  See 'How do I create subcategories of products?' at 
+  http://bit.ly/1j1Dti4 for details.
+{% endcomment %}
 
-    </div>
-  </div>
-  <!-- End collection info -->
-
-  {% if collection.products.size == 0 %}
-
-    {% include 'helper-default-products' %}
-
+{% if collection.all_tags.size > 0 %}
+<ul class="subcategories clearfix clear">
+  <li class="{% unless current_tags %} active{% endunless %}">
+    {{ 'All' | link_to_remove_tag: current_tags.first }}
+  </li>
+  {% for tag in collection.all_tags %}
+  {% if current_tags contains tag %}
+  <li class="active">
+    {{ tag | link_to_remove_tag: tag }}
+  </li>
+  {% else %}
+  <li>
+    {{ tag | link_to_tag: tag }}
+  </li>
   {% endif %}
+  {% endfor %}  
+</ul>
+{% endif %}
 
-  <div class="row products">
-    {% for product in collection.products limit: settings.pagination_limit %}
-      {% include 'product-loop' with collection.handle %}
-    {% endfor %}
-  </div>
-
-  {% include 'pagination' %}
-
-  {% endpaginate %}
-
+{% if collection.description.size > 0 %}
+<div class="rte clearfix">
+  {{ collection.description }}
 </div>
+{% endif %}
 
+<ul class="grid clearfix">
+{% for product in collection.products %}
+  {% include 'product-grid-item' with products_per_row %}
+{% else %}
+  <p>There are no products in this view.</p>
+{% endfor %}
+</ul>
+
+{% if paginate.pages > 1 %}
+<div class="pagination centered">
+  {{ paginate | default_pagination }}
+</div>
+{% endif %}
+
+{% endpaginate %}
+
+{% comment %}
+  JavaScript for collection sorting.
+{% endcomment %}
 <script>
-  Shopify.queryParams = {};
-  if (location.search.length) {
-    for (var aKeyValue, i = 0, aCouples = location.search.substr(1).split('&'); i < aCouples.length; i++) {
-      aKeyValue = aCouples[i].split('=');
-      if (aKeyValue.length > 1) {
-        Shopify.queryParams[decodeURIComponent(aKeyValue[0])] = decodeURIComponent(aKeyValue[1]);
-      }
-    }
-  }
-  var collFilters = jQuery('.coll-filter');
-  collFilters.change(function() {
-      var newTags = [];
-      var newURL = '';
-      delete Shopify.queryParams.page;
-      collFilters.each(function() { 
-        if (jQuery(this).val()) {
-          newTags.push(jQuery(this).val());
-        }
-      });
-      {% if collection.handle %}
-      newURL = '/collections/' + '{{ collection.handle }}';
-      if (newTags.length) {
-        newURL += '/' + newTags.join('+');
-      }
-      var search = jQuery.param(Shopify.queryParams);
-      if (search.length) {
-        newURL += '?' + search;
-      }
-      location.href = newURL;    
-      {% else %}
-      if (newTags.length) {
-        Shopify.queryParams.constraint = newTags.join('+');        
-      }
-      else {
-        delete Shopify.queryParams.constraint;
-      }
-      location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
-      {% endif %}      
+jQuery('.sort-by')
+  .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+  .on('change', function() {
+    Shopify.queryParams.sort_by = jQuery(this).val();
+    location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
   });
-  jQuery('.sort-by')
-    .val('{{ collection.sort_by | default: collection.default_sort_by  }}')
-    .bind('change', function() {
-      Shopify.queryParams.sort_by = jQuery(this).val();
-      location.search = jQuery.param(Shopify.queryParams).replace(/\+/g, '%20');
-    });
 </script>

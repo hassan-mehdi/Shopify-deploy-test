@@ -1,97 +1,122 @@
-<div id="cart">
+<h1>Shopping Cart</h1>
   
-  <!-- Begin empty cart -->
-  {% if cart.item_count == 0 %}
-  <div class="row">
-    <div class="span12 expanded-message">
-      <br>
-      <br>
-      <h2 class="tc">Your cart is empty!</h2>
-    </div>
-  </div>
-  <!-- End empty cart -->
-  
-  <!-- Begin cart -->
-  {% else %}
-  <div class="row">
-    <div class="span12">
-      <h1>Your cart</h1>
-      <form action="/cart" method="post" id="cartform">
-        <table>
-          <thead>
-            <tr>
-              <th class="image">&nbsp;</th>
-              <th class="item">&nbsp;</th>
-              <th class="qty">Quantity</th>
-              <th class="price">Price</th>
-              <th class="remove">&nbsp;</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for item in cart.items %}
-            <tr>
-              <td class="image">
-                <div class="product_image">
-                  <a href="{{ item.url }}">
-                    <img src="{{ item | img_url: 'small' }}"  alt="{{ item.product.title }}" />
-                  </a>
-                </div>
-              </td>
-              <td class="item">
-                <a href="{{ item.url }}">
-                  <strong>{{ item.product.title }}</strong>
-                  {% if item.product.variants.size > 1 %}
-                  <span class="variant_title">{{ item.variant.title }}</span>
-                  {% endif %}
-                </a>
-              </td>
-              <td class="qty">
-                <input type="text" size="4" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" onfocus="this.select();" class="tc item-quantity" />
-              </td>
-              <td class="price">{{ item.line_price | money }}</td>
-              <td class="remove"><a href="/cart/change?line={{ forloop.index }}&quantity=0" class="cart">Remove</a></td>
-            </tr>
-            {% endfor %}
-            <tr class="summary">
-              <td class="image">&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td class="price"><span class="total"><strong>{{ cart.total_price | money }}</strong></span></td>
-              <td>&nbsp;</td>
-            </tr>
-          </tbody>
-        </table>
+{% if cart.item_count > 0 %}
 
-        <div class="span6 inner-left inner-right">
+<form action="/cart" method="post">
+  
+  <table>
+    
+    <thead>
+      <tr>
+        <th class="hide-on-small">Item</th>
+        <th>&nbsp;</th>
+        <th class="hide-on-small">Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th class="hide-on-small">&nbsp;</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+
+    {% for item in cart.items %}    
+    
+      {% comment %}
+      Determining the handle of the collection that was last seen for the 'continue shopping' link.
+      {% endcomment %}
+      
+      {% assign collection_url = item.product.collections.last.url %}
+      {% if collection_url == '/collections/frontpage' or collection_url == blank %}
+        {% assign collection_url = '/collections/all' %}
+      {% endif %}
+      
+      {% if forloop.first %}
+        {% assign continue_shopping_url = collection_url %}
+      {% endif %}
+
+      <tr>
+        <td class="hide-on-small">
+          <a href="{{ collection_url }}{{ item.url }}">
+            <img src="{{ item | img_url: 'compact' }}"  alt="{{ item.title | escape }}" />
+          </a>
+        </td>
+        <td>
+          <h2 class="delta">
+            <a href="{{ collection_url }}{{ item.url }}">
+            {{ item.title }}
+            </a>
+          </h2>
           {% comment %}
-          <!--
-          <div class="checkout-buttons clearfix">
-            <label for="note">Add special instructions for your order...</label>
-            <textarea id="note" name="note" rows="8" cols="70">{{ cart.note }}</textarea>
-          </div>
-          -->
+          Line Item Properties
           {% endcomment %}
-        </div>
-
-        <div class="span6 cart-buttons inner-right inner-left">
-          <div class="buttons clearfix">
-            <input type="submit" id="checkout" class="btn" name="checkout" value="Check out" />
-            <input type="submit" id="update-cart" class="btn secondary" name="update" value="Update" />
-          </div>
-          {% if additional_checkout_buttons %}        
-             <div class="extra-checkout-buttons">
-             {{ content_for_additional_checkout_buttons }}
-             </div>
+          {% if item.properties.size > 0 %}
+          <p>
+            {% for p in item.properties %}
+              {% unless p.last == blank %}
+                {{ p.first }}:
+                {% if p.last contains '/uploads/' %}
+                  <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                {% else %}
+                  {{ p.last }}
+                {% endif %}
+                <br />
+              {% endunless %}
+            {% endfor %}
+          </p>
           {% endif %}
-        </div>
-
-      </form>
-    </div>
+          <h3 class="epsilon">{{ item.vendor }}</h3>
+        </td>
+        <td class="hide-on-small">{{ item.price | money }}</td>
+        <td>
+          <input type="number" name="updates[]" id="updates_{{ item.id }}" class="quantity" value="{{ item.quantity }}" />
+        </td>
+        <td>{{ item.line_price | money }}</td>
+        <td class="hide-on-small">
+          <a href="/cart/change?line={{ forloop.index }}&quantity=0">Remove</a>
+        </td>
+      </tr>
+    {% endfor %}
+    
+    </tbody>
+    
+  </table>
+  
+  {% comment %}
+  For the checkout and update buttons to work, they need to use
+  a name attribute set to 'checkout' and 'update', respectively. That's case-sensitive.
+  {% endcomment %}
+  
+  <div class="column two-thirds flow-opposite right-aligned">
+    <h3 class="gamma">Subtotal <em>{{ cart.total_price | money }}</em></h3>
+    <a class="hide-on-small" href="{{ continue_shopping_url }}">Continue shopping</a>
+    <span class="or hide-on-small">or</span>
+    <input type="submit" name="update" value="Update cart" />
+    <span class="or">or</span>
+    <input type="submit" name="checkout" value="Check out" />    
+    {% comment %}Paypal and Google checkout buttons{% endcomment %}
+    {% if additional_checkout_buttons %}
+    <p class="additional-checkout-buttons">
+      {{ content_for_additional_checkout_buttons }}
+    </p>
+    {% endif %}
   </div>
-  {% endif %}
   
-  
-  <!-- End cart -->
-  
-</div> 
+  {% comment %}
+  For the special instructions to be submitted with order,
+  we need to use a name attribute set to 'note'.
+  {% endcomment %}
+  <div class="column third flow-opposite left-aligned">
+    <p>Special instructions for seller</p>
+    <textarea name="note">{{ cart.note }}</textarea>
+  </div>
 
+</form>
+
+{% else %}
+
+<div>
+  <h2 class="gamma">It appears that your cart is currently empty!</h2>
+  <h3 class="delta">You can continue browsing <a href="/collections/all">here</a>.</h3>
+</div>
+
+{% endif %}
