@@ -1,0 +1,214 @@
+.slider-panels-wrapper{
+	width: 1170px;
+	position: absolute;
+	margin: auto;
+	left: 0;
+	right: 0;
+	height: 100%;
+	bottom: 0;
+}
+
+.frontpage-top{
+	position: relative;
+
+	.cycle-slideshow{
+		list-style-type: none;
+		background: $red;
+
+		.cycle-slide{
+			width: 100%;
+		}
+
+		img{
+			width: 100%;
+		}
+
+		.slide-description{
+			position: absolute;
+			bottom: 300px;
+			left: 0;
+			right: 0;
+			margin: auto;
+			color: $white;
+			width: 1170px;
+
+			h1{
+				width: 100%;
+				@include animate(0.6s);
+				margin-left: 70%;
+				opacity: 0.5;
+				line-height: 3rem;
+			}
+
+			h2{
+				width: 100%;
+				@include animate(0.8s);
+				margin-left: 40%;
+				opacity: 0.5;
+				@extend .h4;
+				font-weight: $light-weight;
+			}
+		}
+
+		.cycle-slide-active{
+			.slide-description{
+				h1{
+					margin-left: 0;
+					opacity: 1;
+
+				}
+
+				h2{
+					margin-left: 0;
+					opacity: 1;
+				}
+			}
+		}
+	}
+
+	.slide-nav{
+		position: absolute;
+		right: 0;
+		bottom: 191px;
+		z-index: 200;
+
+		a{
+			display: inline-block;
+			float: left;
+		}
+
+		.next{
+			background: $midblue2 url({{ 'ico-white-arrow-right.svg' | asset_url }}) no-repeat center center;
+			width: 40px;
+			height: 40px;
+		}
+
+		.prev{
+			background: $midblue1 url({{ 'ico-white-arrow-left.svg' | asset_url }}) no-repeat center center;
+			width: 40px;
+			height: 40px;
+		}
+	}
+
+	.cycle-pager{
+		position: absolute;
+		bottom: 0;
+		z-index: 200;
+		margin: auto;
+		left: 0;
+		right: 0;
+		width: 100%;
+
+		a{
+			background: $midblue2;
+			display: inline-block;
+			float: left;
+			width: 25%;
+
+			&:hover{
+				opacity: 1;
+			}
+			
+			img{
+				@include animate(1s);
+
+				&:hover{
+					opacity: 0.3;
+				}
+			}
+
+			&.cycle-pager-active{
+				img{
+					opacity: 0.5;
+				}
+			}
+		}
+	}
+}
+
+.newsletter-form-wrapper{
+	position: absolute;
+	bottom: 40%;
+	right: 0;
+	z-index: 200;
+	width: 30%;
+	color: $white;
+	opacity: 0.9;
+
+	h3{
+		background: $darkblue2;
+		padding: 15px;
+	}
+
+	h4{
+		background: $midblue1;
+		font-weight: $light-weight;
+		padding: 15px;
+	}
+
+	form{
+		padding: 15px;
+	}
+
+	fieldset{
+		padding: 0;
+	}
+
+	form, fieldset{
+		background: $midblue2;
+		font-weight: $light-weight;
+		border: none;
+		color: $white;
+
+		input[type="email"]{
+			border: none;
+			color: $white;
+			background: none;
+			width: 100%;
+			padding-left: 0;
+			@extend .up;
+		}
+
+		::-webkit-input-placeholder {
+			color: $white;
+		}
+
+		:-moz-placeholder {
+			color: $white;  
+		}
+
+		::-moz-placeholder {
+			color: $white;  
+		}
+
+		:-ms-input-placeholder {  
+			color: $white;  
+		}
+	}
+}
+
+.collections-wrapper{
+	background: $darkblue2;
+	color: $white;
+
+	h2{
+		padding: 15px 30px;
+		@extend .h4;
+		@extend .up;
+		background: $red;
+		float: left;
+	}
+
+	.featured-links{
+		a{
+			@extend .h4;
+			@extend .up;
+			font-weight: $light-weight;
+			float: left;
+			display: inline-block;
+			background: $midblue2;
+			color: $white;
+			padding: 15px 30px;
+		}
+	}
+}

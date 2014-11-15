@@ -59,7 +59,7 @@
     </tr>
     <tr>
       <td><label for="logo_image">Custom Logo</label></td>
-      <td><input type="file" name="logo.png" id="logo_image" data-max-width="1200" data-max-height="1200" /></td>
+      <td><input type="file" name="logo.svg" id="logo_image"/></td>
     </tr>
     <tr>
       <td colspan="2"><small>Recommend the optimal width and height for your logo here.</small></td>
@@ -148,6 +148,64 @@
 
 <fieldset>
   <legend>Homepage</legend>
+  <h3>Slideshow</h3>
+  <table class="standard-table">
+    <tr>
+      <td colspan="2"></td>
+      <td>Image</td>
+      <td>Links to</td>
+    </tr>
+    <tr class="odd">
+      <td width="25"><input type="checkbox" id="slide_1" name="slide_1" value="1" /></td>
+      <td><label>Slide #1</label></td>
+      <td><input type="file" id="slide_1" name="slideshow_1.jpg" data-max-width="1600" /></td>
+      <td>
+        <input type="text" id="slide_1_link" name="slide_1_link" value="/collections/all" size="30" />
+        <input type="text" id="slide_1_title" name="slide_1_title" value="Slide 1 Title" size="30" />
+        <input type="text" id="slide_1_subTitle" name="slide_1_subTitle" value="Slide 1 Sub Title" size="30" />
+      </td>
+    </tr>
+    <tr class="even">
+      <td><input type="checkbox" id="slide_2" name="slide_2" value="1"/></td>
+      <td><label>Slide #2</label></td>
+      <td><input type="file" id="slide_2" name="slideshow_2.jpg" data-max-width="1600" /></td>
+      <td>
+        <input type="text" id="slide_2_link" name="slide_2_link" value="/collections/all" size="30" />
+        <input type="text" id="slide_2_title" name="slide_2_title" value="Slide 2 Title" size="30" />
+        <input type="text" id="slide_2_subTitle" name="slide_2_subTitle" value="Slide 2 Subtitle" size="30" />
+      </td>
+    </tr>
+    <tr class="odd">
+      <td><input type="checkbox" id="slide_3" name="slide_3" value="1" /></td>
+      <td><label>Slide #3</label></td>
+      <td><input type="file" id="slide_3" name="slideshow_3.jpg" data-max-width="1600" /></td>
+      <td>
+        <input type="text" id="slide_3_link" name="slide_3_link" size="30" />
+        <input type="text" id="slide_3_title" name="slide_3_title"  value="Slide 3 Title" size="30" />
+        <input type="text" id="slide_3_subTitle" name="slide_3_subTitle"  value="Slide 3 Title" size="30" />
+      </td>
+    </tr>
+    <tr class="even">
+      <td><input type="checkbox" id="slide_4" name="slide_4" value="1" /></td>
+      <td><label>Slide #4</label></td>
+      <td><input type="file" id="slide_4" name="slideshow_4.jpg" data-max-width="1600" /></td>
+      <td>
+        <input type="text" id="slide_4_link" name="slide_4_link" size="30" />
+        <input type="text" id="slide_4_title" name="slide_4_title"  value="Slide 4 Title" size="30" />
+        <input type="text" id="slide_4_subTitle" name="slide_4_subTitle"  value="Slide 4 Title" size="30" />
+      </td>
+    </tr>
+  </table>
+  <table class="standard-table">
+    <tr>
+      <td><label>Newsletter panel Title</label></td>
+      <td><input type="text" id="newsletter_title" name="newsletter_title" value="Signup to our newsletter" size="30" /></td>
+    </tr>
+    <tr>
+      <td><label>Newsletter panel Description</label></td>
+      <td><input type="text" id="newsletter_description" name="newsletter_description" value="join our mailing list and get all the latest news" size="30" /></td>
+    </tr>
+  </table>
   <h3>Content</h3>
   <table>
     <tr>
@@ -213,5 +271,65 @@
 <fieldset>
   <legend>Cart page</legend>
   <table>
+  </table>
+</fieldset>
+
+<fieldset>
+  <legend>Collection Filters</legend>
+  <table>
+    <tr>
+      <th><label for="include_filter_no_1">Use filter no 1?</label></th>
+      <td>
+      <input type="checkbox" id="include_filter_no_1" name="include_filter_no_1" value="0" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="filter_no_1_label">Filter no 1 Label</label></th>
+      <td>
+      <input type="text" id="filter_no_1_label" name="filter_no_1_label" value="" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="filter_no_1_linklist">Filter no 1 Linklist</label></th>
+      <td>
+      <select class="linklist" id="filter_no_1_linklist" name="filter_no_1_linklist" value="None" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="include_filter_no_2">Use filter no 2?</label></th>
+      <td>
+      <input type="checkbox" id="include_filter_no_2" name="include_filter_no_2" value="0" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="filter_no_2_label">Filter no 2 Label</label></th>
+      <td>
+      <input type="text" id="filter_no_2_label" name="filter_no_2_label" value="" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="filter_no_2_linklist">Filter no 2 Linklist</label></th>
+      <td>
+      <select class="linklist" id="filter_no_2_linklist" name="filter_no_2_linklist" value="None" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="include_filter_no_3">Use filter no 3?</label></th>
+      <td>
+      <input type="checkbox" id="include_filter_no_3" name="include_filter_no_3" value="0" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="filter_no_3_label">Filter no 3 Label</label></th>
+      <td>
+      <input type="text" id="filter_no_3_label" name="filter_no_3_label" value="" />
+      </td>
+    </tr>
+    <tr>
+      <th><label for="filter_no_3_linklist">Filter no 3 Linklist</label></th>
+      <td>
+      <select class="linklist" id="filter_no_3_linklist" name="filter_no_3_linklist" value="None" />
+      </td>
+    </tr>
   </table>
 </fieldset>

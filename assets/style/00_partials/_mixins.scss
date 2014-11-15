@@ -1,0 +1,13 @@
+@mixin animate($time){
+	-webkit-transition: all $time cubic-bezier(1, 0, 0, 1);
+	-moz-transition: all $time cubic-bezier(1, 0, 0, 1);
+	-ms-transition: all $time cubic-bezier(1, 0, 0, 1);
+	-o-transition: all $time cubic-bezier(1, 0, 0, 1);
+	transition: all $time cubic-bezier(1, 0, 0, 1);
+}
+
+@mixin resetList{
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+}

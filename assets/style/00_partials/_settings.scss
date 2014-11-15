@@ -2,13 +2,10 @@
    Most theme settings should be stored in Sassy CSS variables here, for reuse.
    ========================================================================== */
 /*!theme settings */
-$site-max-width:          60 * {{ settings.base_font_size }};
-$breakpoint-small-screen: 30 * {{ settings.base_font_size }};
-$gutter:                  1 *  {{ settings.base_font_size }}; 
 $background-color:        {{ settings.background_color }};
 $text-color:              {{ settings.text_color }};
 $link-color:              {{ settings.link_color }};
-$base-font-family:        {{ settings.base_font_family }};
+$base-font-family:        'Oswald', sans-serif;
 $base-font-size:          {{ settings.base_font_size }};
-$heading-font-family:     $base-font-family;
-$heading-font-weight:     600;
+$heading-font-family:     'Libre Baskerville', serif;
+$heading-font-weight:     700;

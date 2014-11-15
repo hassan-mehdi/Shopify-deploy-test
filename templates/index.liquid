@@ -1,39 +1,100 @@
-{% comment %}
-  Re-use the 'rte' class wherever you output content that was added by a merchant using the Rich Text Editor ( 'rte' stands for rich text editor ).
-  Style all HTML elements in that content the same way across the board.
-  Use the 'rte' class in your CSS to help maintain that consistency.
-  Example: the h2 element should have the same size and color in:
-  - product descriptions
-  - collection descriptions
-  - page content
-  - blog posts
-{% endcomment %}
+{% assign specificStyle   = 'frontpage.scss.css' %}
+{% assign specificScripts = 'frontpage.js' %}
 
-{% comment %}
-  Very important reading:
-  http://docs.shopify.com/themes/liquid-basics/what-is-true-and-false-in-liquid
-  Learn how to read theme settings in your theme.
-{% endcomment %}
-
-{% unless settings.homepage_page == blank or pages[settings.homepage_page].empty? %}
-{% assign page = pages[settings.homepage_page] %}
-<div class="rte grid-margins">
-  {{ page.content }}
+{% if settings.slide_1 != false or settings.slide_2 != false or settings.slide_3 != false or settings.slide_4 != false %}
+<!-- Begin slider -->
+<div class="container-fluid">
+  <div class="frontpage-top row">
+    <div class="cycle-slideshow"
+      data-cycle-tmpl-regex="\*\*((\.)?.*?)\*\*"
+      data-cycle-pager-template="<a href=# ><img src='**children.0.src**' width=100% height=190></a>"
+      data-cycle-pager=".cycle-pager"
+      data-cycle-fx="scrollHorz"
+      data-cycle-pause-on-hover="false"
+      data-cycle-easing="easeInOutExpo"
+      data-cycle-ease-out="easeOutCirc"
+      data-cycle-speed="800"
+      data-cycle-prev=".prev"
+      data-cycle-next=".next"
+      data-cycle-slides="> a"
+      data-cycle-update-view=-1>
+      {% for i in (1..4) %}
+      {% capture show_slide %}slide_{{ i }}{% endcapture %}
+      {% capture image %}slideshow_{{ i }}.jpg{% endcapture %}
+      {% capture link %}slide_{{ i }}_link{% endcapture %}
+      {% capture title %}slide_{{ i }}_title{% endcapture %}
+      {% capture subtitle %}slide_{{ i }}_title{% endcapture %}
+      {% capture alt %}slide_{{ i }}_alt{% endcapture %}
+      {% if settings[show_slide] %}
+      <a href="{{ settings[link] }}" class="void-anim">
+        <img src="{{ image | asset_url }}" alt="{{ settings[alt] | escape }}" />
+        <div class="slide-description">
+          <h1>{{ settings[title] }}</h1>
+          <h2>{{ settings[subtitle] }}</h2>
+        </div>
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="slider-panels-wrapper">
+      <div class="slide-nav">
+        <a href="#" class="prev"></a> 
+        <a href="#" class="next"></a>
+      </div>
+      <div class="cycle-pager"></div>
+      <div class="newsletter-form-wrapper">
+        {% capture newsletterTitle %}newsletter_title{% endcapture %}
+        {% capture newsletterDescription %}newsletter_description{% endcapture %}
+        <h3 class="newsletter-form-title">{{settings[newsletterTitle]}}</h3>
+        <h4 class="newsletter-form-description">{{settings[newsletterDescription]}}</h4>
+        <form class="newsletter-form">
+          <fieldset>
+            <input type="email" id="newsletter-email" placeholder="type email here to subscribe"/>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End slider -->
+  {% endif %}
 </div>
-{% endunless %}
+<div class="collections-wrapper">
+  <div class="container">
+    <div class="row">  
+      <h2>Winter sale now on</h2>
+      {% if linklists.featured.links.size > 0 %}
+      <div class="featured-links" role="navigation">
+        {% for link in linklists.featured.links %}
+        <a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<div class="container">
+<div class="frontpage-bottom row">
+  {% unless settings.homepage_page == blank or pages[settings.homepage_page].empty? %}
+  {% assign page = pages[settings.homepage_page] %}
+  <div class="rte grid-margins">
+    {{ page.content }}
+  </div>
+  {% endunless %}
 
-{% unless settings.homepage_collection == blank or collections[settings.homepage_collection].empty? %}
-{% assign collection = collections[settings.homepage_collection] %}
-<ul class="grid clearfix">
-{% for product in collection.products %}
-  {% include 'product-grid-item' with 'three-per-row' %}
-{% else %}
-<li>
-  <p>
-    You have no products in your {{ collections[settings.homepage_collection].title }} collection. 
-    <a href="http://www.shopify.com/admin/collections">Add some.</a>
-  <p>
-</li>
-{% endfor %}
-</ul>
-{% endunless %}
+  {% unless settings.homepage_collection == blank or collections[settings.homepage_collection].empty? %}
+  {% assign collection = collections[settings.homepage_collection] %}
+  <ul class="grid clearfix">
+    {% for product in collection.products %}
+    {% include 'product-grid-item' with 'four-per-row' %}
+    {% else %}
+    <li>
+      <p>
+        You have no products in your {{ collections[settings.homepage_collection].title }} collection. 
+        <a href="http://www.shopify.com/admin/collections">Add some.</a>
+        <p>
+        </li>
+        {% endfor %}
+      </ul>
+   {% endunless %}
+</div>
+</div>

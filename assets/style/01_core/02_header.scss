@@ -1,0 +1,93 @@
+.topbar{
+	background: $darkblue2;
+	color: $white;
+	text-align: right;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+
+	a{
+		color: $white;
+
+		img{
+			margin-right: 10px;
+		}
+	}
+
+	.cart-link{
+		a{
+			background: $red;
+			padding: 10px;
+			display: inline-block;
+		}
+	}
+}
+
+.header-body{
+	padding: 75px 15px 30px;
+}
+
+.main-nav{
+	padding-top: 15px;
+	
+	ul{
+		li{
+			float: left;
+			display: inline;
+
+			a{
+				padding: 10px;
+				@extend .up;
+				font-weight: $normal-weight;
+			}
+
+			&.active{
+				a{
+					color: $darkblue1;
+				}
+			}
+		}
+	}
+}
+
+.search-form{
+	position: relative;
+	margin-top: 11px;
+
+	input[type="search"]{
+		@include animate(1s);
+		border-width: 0 0 1px;
+		border-color: $border-grey;
+		border-style: solid;
+		padding: 5px 0;
+		display: inline-block;
+		width: 100%;
+		@extend .up;
+		color: $black;
+
+		&:focus{
+			border-color: #7BA3C4;
+		}
+	}
+
+
+	button[type="submit"]{
+		position: absolute;
+		right: 0;
+		top: 0;
+		background: none;
+		border: none;
+		width: 33px;
+		height: 27px;
+
+		svg{
+			@include animate(1s);
+			fill: $grey;
+		}
+
+		&.active svg{
+			fill: $linkblue;
+		}
+	}
+}

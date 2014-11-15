@@ -71,5 +71,12 @@ jQuery(function($) {
     e.preventDefault();
     switchImage($(this).attr('href'), null, $('.product-photo-container img')[0]);
   } );
-  
+
+  $('.search-form #search-field').focus(function(){
+    $(this).next('button').addClass('active');
+  });
+
+  $('.search-form #search-field').blur(function(){
+    $(this).next('button').removeClass('active');
+  });
 });

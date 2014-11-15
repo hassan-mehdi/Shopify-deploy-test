@@ -20,7 +20,7 @@ Here, for the sake of teaching, we will use 2 presentation options:
   {% assign on_sale = true %}
 {% endif %}
 
-<li class="{{ product-grid-item }}{% unless product.available %} sold-out{% endunless %}{% if on_sale %} on-sale{% endif %}{% if product-grid-item == 'four-per-row' %}{% cycle 'last': '', '', '', ' last-in-row' %}{% elsif product-grid-item == 'three-per-row' %}{% cycle 'last': '', '', ' last-in-row' %}{% endif %} centered">
+<li class="grid-item {{ product-grid-item }}{% unless product.available %} sold-out{% endunless %}{% if on_sale %} on-sale{% endif %}{% if product-grid-item == 'four-per-row' %}{% cycle 'last': '', '', '', ' last-in-row' %}{% elsif product-grid-item == 'three-per-row' %}{% cycle 'last': '', '', ' last-in-row' %}{% endif %} centered">
 
   <div class="prod-image-wrap">  
     <a href="{{ product.url | within: collection }}">
@@ -48,23 +48,3 @@ Here, for the sake of teaching, we will use 2 presentation options:
   
 </li>
 
-{% comment %}
-You don't need to use a clearing div. Use whatever it is you use to clear
-floated elements. The code that follows just just shows you how to use a cycle element.
-Notice that we named it ( 'clear' ). We need to name it because there's another cycle
-element in this file ( we called that other one 'last' ). If you have more than one
-cycle element in a rendered view, you'll need to name all of them.
-The cycle element is documented here: http://docs.shopify.com/themes/liquid-basics/logic#cycle
-{% endcomment %}
-
-{% if product-grid-item == 'six-per-row' %}
-{% cycle 'clear': '', '', '', '', '', '<div style="clear:both"></div>' %}
-{% elsif product-grid-item == 'five-per-row' %}
-{% cycle 'clear': '', '', '', '', '<div style="clear:both"></div>' %}
-{% elsif product-grid-item == 'four-per-row' %}
-{% cycle 'clear': '', '', '', '<div style="clear:both"></div>' %}
-{% elsif product-grid-item == 'three-per-row' %}
-{% cycle 'clear': '', '', '<div style="clear:both"></div>' %}
-{% elsif product-grid-item == 'two-per-row' %}
-{% cycle 'clear': '', '<div style="clear:both"></div>' %}
-{% endif %}

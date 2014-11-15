@@ -1,0 +1,53 @@
+$light-weight   : 	300;
+$normal-weight  : 	400;
+
+.h1-style, .h2-style, .h3-style{
+	font-family: $heading-font-family;
+	font-weight: $normal-weight;
+	font-style: italic;
+	text-rendering: optimizeLegibility; /* to enable ligatures and kerning */
+	letter-spacing: -1px;
+	margin: 0;
+}
+
+.h4-style, .h5-style, .h6-style {
+	font-family: $base-font-family;
+	font-weight: $heading-font-weight;
+	text-rendering: optimizeLegibility; /* to enable ligatures and kerning */
+	font-style: normal;
+	margin: 0;
+}
+
+h1, .h1{
+	@extend .h1-style;
+	font-size: 3.5rem;
+}
+
+h2, .h2{
+	@extend .h2-style;
+	font-size: 3rem;
+}
+
+h3, .h3{
+	@extend .h3-style;
+	font-size: 2rem;
+}
+
+h4, .h4{
+	@extend .h4-style;
+	font-size: 1.5rem;
+}
+
+h5, .h5{
+	@extend .h5-style;
+	font-size: 1.4rem;
+}
+
+h6, .h6{
+	@extend .h6-style;
+	font-size: 1.3rem;
+}
+
+.up{
+	text-transform: uppercase;
+}
